@@ -44,20 +44,6 @@
       "active": true,
       "createdAt": "2026-04-17T17:43:53.797Z",
       "updatedAt": "2026-04-17T17:47:07.776Z"
-    },
-    {
-      "id": "plan_1776623547430_nfdw",
-      "name": "1000",
-      "price": "10000",
-      "priceUsd": 100000,
-      "description": "10",
-      "bullets": [
-        "1111",
-        "111"
-      ],
-      "active": true,
-      "createdAt": "2026-04-19T18:32:27.430Z",
-      "updatedAt": "2026-04-19T18:32:27.430Z"
     }
   ],
   "config": {

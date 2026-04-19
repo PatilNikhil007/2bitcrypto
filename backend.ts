@@ -22,13 +22,10 @@ const YOUTUBE_CHANNEL_ID = "UCKZychZHsAMTFilBlFyrAGA";
 const CRYPTORANK_NEWS_URL = "https://cryptorank.io/news";
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "2bits1321";
 
 if (!COINRANKING_API_KEY) {
   console.warn("Warning: COINRANKING_API_KEY is not set — live coin data will fail.");
-}
-if (!ADMIN_TOKEN) {
-  console.warn("Warning: ADMIN_TOKEN is not set — admin endpoints are effectively locked.");
 }
 
 const SUBMISSIONS_FILE = path.join(__dirname, "submissions.json");
