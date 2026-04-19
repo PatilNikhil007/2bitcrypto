@@ -1,14 +1,17 @@
 {
   "type": "module",
+  "scripts": {
+    "build": "echo \"No build step required — using tsx at runtime.\"",
+    "start": "tsx backend.ts",
+    "dev": "tsx watch backend.ts"
+  },
   "dependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@xmldom/xmldom": "^0.9.9",
     "cors": "^2.8.6",
     "ethers": "^6.16.0",
-    "express": "^5.2.1"
-  },
-  "devDependencies": {
+    "express": "^5.2.1",
     "tsx": "^4.21.0"
   }
 }
