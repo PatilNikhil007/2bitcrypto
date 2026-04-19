@@ -15,15 +15,21 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const COINRANKING_API_KEY =
-  "coinranking3fcf45e2c0b3d7d3d1fb92aa9470ccda9da653eb4e301ee2";
+const COINRANKING_API_KEY = process.env.COINRANKING_API_KEY || "";
 const COINRANKING_URL =
   "https://api.coinranking.com/v2/coins?limit=24&orderBy=marketCap&orderDirection=desc&timePeriod=24h";
 const YOUTUBE_CHANNEL_ID = "UCKZychZHsAMTFilBlFyrAGA";
 const CRYPTORANK_NEWS_URL = "https://cryptorank.io/news";
 const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
-const ADMIN_TOKEN = "admin";
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
+
+if (!COINRANKING_API_KEY) {
+  console.warn("Warning: COINRANKING_API_KEY is not set — live coin data will fail.");
+}
+if (!ADMIN_TOKEN) {
+  console.warn("Warning: ADMIN_TOKEN is not set — admin endpoints are effectively locked.");
+}
 
 const SUBMISSIONS_FILE = path.join(__dirname, "submissions.json");
 const PLANS_FILE = path.join(__dirname, "plans.json");
@@ -960,7 +966,7 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, async () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Admin panel: http://localhost:${PORT}/admin`);
-  console.log(`Admin token: ${ADMIN_TOKEN}`);
+  console.log(`Admin token: ${ADMIN_TOKEN ? "[set via env]" : "[NOT SET]"}`);
   await refreshAll();
   setInterval(refreshAll, REFRESH_INTERVAL_MS);
 });
