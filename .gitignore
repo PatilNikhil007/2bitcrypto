@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+
+submissions.json
+used_txids.json
+
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/
+
+dist/
+build/

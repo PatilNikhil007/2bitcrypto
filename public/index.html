@@ -1,0 +1,1280 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>2BitCrypto | Crypto News, Markets & Promotions</title>
+        <meta
+            name="description"
+            content="2BitCrypto official website for live crypto prices, market headlines, YouTube content, trading group access, newsletter signup and project promotions."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            brand: {
+                                blue: "#4fa3ff",
+                                purple: "#7d58ff",
+                                cyan: "#41d7ff",
+                                green: "#31d68a",
+                                yellow: "#f7c948",
+                                red: "#ff5f73",
+                                muted: "#9fb2d3",
+                                text: "#eef4ff",
+                                bg: "#07111f",
+                            },
+                        },
+                        fontFamily: { sans: ["Inter", "sans-serif"] },
+                        borderRadius: { "2xl": "24px", xl: "18px" },
+                    },
+                },
+            };
+        </script>
+        <style>
+            /* kept for JS-driven dynamic content and non-Tailwind-expressible rules */
+            :root {
+                --green: #31d68a;
+                --cyan: #41d7ff;
+                --blue: #4fa3ff;
+                --purple: #7d58ff;
+                --red: #ff5f73;
+                --yellow: #f7c948;
+                --muted: #9fb2d3;
+                --text: #eef4ff;
+                --line: rgba(255, 255, 255, 0.1);
+                --shadow: 0 16px 45px rgba(0, 0, 0, 0.32);
+            }
+            body {
+                background:
+                    radial-gradient(
+                        circle at top left,
+                        rgba(125, 88, 255, 0.22),
+                        transparent 26%
+                    ),
+                    radial-gradient(
+                        circle at top right,
+                        rgba(65, 215, 255, 0.16),
+                        transparent 24%
+                    ),
+                    linear-gradient(
+                        180deg,
+                        #07101d 0%,
+                        #091425 38%,
+                        #08111f 100%
+                    );
+            }
+            /* coin sparklines and JS-rendered content */
+            .sparkline-wrap canvas {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+            /* sentiment badges */
+            .sentiment {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 10px;
+                border-radius: 999px;
+                font-size: 0.78rem;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+            .sentiment .dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+            .sentiment.bullish {
+                background: rgba(49, 214, 138, 0.12);
+                color: #83f2b7;
+            }
+            .sentiment.bullish .dot {
+                background: var(--green);
+            }
+            .sentiment.mixed {
+                background: rgba(247, 201, 72, 0.12);
+                color: #ffd876;
+            }
+            .sentiment.mixed .dot {
+                background: var(--yellow);
+            }
+            .sentiment.bearish {
+                background: rgba(255, 95, 115, 0.12);
+                color: #ffa3af;
+            }
+            .sentiment.bearish .dot {
+                background: var(--red);
+            }
+            /* status dot pulse */
+            .status-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: var(--green);
+                box-shadow: 0 0 12px rgba(49, 214, 138, 0.8);
+            }
+            /* nav toggle */
+            #nav-toggle {
+                display: none;
+            }
+            @media (min-width: 781px) {
+                .hamburger {
+                    display: none !important;
+                }
+            }
+            @media (max-width: 780px) {
+                .nav-links {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.3s ease;
+                    flex-direction: column;
+                    width: 100%;
+                }
+                #nav-toggle:checked ~ .nav-links {
+                    max-height: 400px;
+                }
+            }
+            /* intro-card gradient overlay */
+            .intro-card {
+                background:
+                    linear-gradient(
+                        135deg,
+                        rgba(125, 88, 255, 0.22),
+                        rgba(65, 215, 255, 0.08)
+                    ),
+                    linear-gradient(
+                        180deg,
+                        rgba(14, 27, 53, 0.95),
+                        rgba(8, 17, 34, 0.98)
+                    );
+            }
+            .stat-box {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 18px;
+                padding: 16px;
+            }
+            .stat-box span {
+                display: block;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+            .stat-box strong {
+                display: block;
+                font-size: 1.35rem;
+                font-weight: 800;
+            }
+
+            .coin-card {
+                padding: 16px;
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 18px;
+            }
+            .coin-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 10px;
+            }
+            .coin-brand {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-width: 0;
+            }
+            .coin-brand img {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                object-fit: cover;
+                background: rgba(255, 255, 255, 0.08);
+            }
+            .coin-brand strong {
+                display: block;
+                font-size: 0.98rem;
+            }
+            .coin-brand small {
+                color: var(--muted);
+            }
+            .coin-price {
+                font-size: 1.2rem;
+                font-weight: 800;
+                margin-bottom: 10px;
+            }
+            .coin-rank {
+                margin-top: 10px;
+                color: var(--muted);
+                font-size: 0.86rem;
+            }
+            .change {
+                font-weight: 800;
+                font-size: 0.88rem;
+            }
+            .change.positive {
+                color: #83f2b7;
+            }
+            .change.negative {
+                color: #ffa3af;
+            }
+            .sparkline-wrap {
+                height: 64px;
+                border-radius: 14px;
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.03);
+            }
+            .sparkline-wrap canvas {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 13px 18px;
+                border-radius: 999px;
+                font-weight: 700;
+                border: 1px solid transparent;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+                text-decoration: none;
+            }
+            .btn:hover {
+                transform: translateY(-1px);
+            }
+            .btn.small {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+            .btn-primary {
+                background: linear-gradient(135deg, var(--purple), var(--blue));
+                color: white;
+                box-shadow: 0 10px 25px rgba(125, 88, 255, 0.28);
+            }
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.05);
+                color: var(--text);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: #b8c7e7;
+                font-size: 0.82rem;
+                font-weight: 800;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+            }
+            .news-item {
+                padding: 16px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 18px;
+            }
+            .news-item a {
+                display: block;
+                font-weight: 700;
+                line-height: 1.5;
+                margin-bottom: 8px;
+                color: var(--text);
+            }
+            .news-item a:hover {
+                text-decoration: underline;
+            }
+            .news-meta {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                color: var(--muted);
+                font-size: 0.88rem;
+            }
+
+            .youtube-item {
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 18px;
+            }
+            .video-thumb {
+                width: 100%;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+            }
+            .youtube-body {
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .youtube-body h3 {
+                font-size: 1.05rem;
+                line-height: 1.45;
+                margin: 0;
+            }
+            .youtube-label {
+                display: inline-block;
+                padding: 6px 10px;
+                border-radius: 999px;
+                font-size: 0.75rem;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                background: rgba(65, 215, 255, 0.14);
+                color: #95ebff;
+            }
+
+            .promo-card {
+                display: grid;
+                gap: 14px;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 18px;
+            }
+            .promo-card h3 {
+                font-size: 1.2rem;
+                font-weight: 800;
+                margin: 0;
+            }
+            .promo-card p {
+                color: var(--muted);
+                margin: 0;
+                line-height: 1.6;
+            }
+            .promo-price {
+                font-size: 1.8rem;
+                font-weight: 900;
+            }
+            .promo-card ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: grid;
+                gap: 8px;
+                color: var(--muted);
+            }
+            .promo-card li::before {
+                content: "•";
+                color: var(--cyan);
+                margin-right: 8px;
+            }
+        </style>
+    </head>
+    <body class="min-h-screen font-sans text-brand-text">
+        <div class="w-full max-w-[1320px] mx-auto px-4 py-5 pb-10">
+            <!-- TOPBAR -->
+            <header
+                class="sticky top-3 z-20 flex flex-wrap items-center justify-between gap-4 px-5 py-3.5 bg-[rgba(7,14,28,0.8)] backdrop-blur-xl border border-white/10 rounded-[28px] md:rounded-full shadow-xl mb-6"
+            >
+                <a class="brand flex items-center gap-3 min-w-0" href="#top">
+                    <img
+                        src="https://pbs.twimg.com/profile_images/2040505802029498368/z58Q8Xtp_400x400.png"
+                        alt="2BitCrypto logo"
+                        class="w-[52px] h-[52px] rounded-full object-cover border-2 border-white/20"
+                    />
+                    <div>
+                        <span class="block font-extrabold tracking-tight"
+                            >2BitCrypto</span
+                        >
+                        <small class="block text-brand-muted"
+                            >Crypto news, markets & exposure</small
+                        >
+                    </div>
+                </a>
+
+                <input type="checkbox" id="nav-toggle" />
+                <label
+                    for="nav-toggle"
+                    class="hamburger flex md:hidden items-center justify-center w-10 h-10 rounded-full bg-white/6 border border-white/10 cursor-pointer text-brand-text ml-auto"
+                    >☰</label
+                >
+
+                <nav
+                    class="nav-links flex flex-wrap items-center justify-center gap-5"
+                    aria-label="Primary"
+                >
+                    <a
+                        href="#markets"
+                        class="text-brand-muted font-semibold hover:text-brand-text transition-colors"
+                        >Markets</a
+                    >
+                    <a
+                        href="#youtube"
+                        class="text-brand-muted font-semibold hover:text-brand-text transition-colors"
+                        >YouTube</a
+                    >
+                    <a
+                        href="#group"
+                        class="text-brand-muted font-semibold hover:text-brand-text transition-colors"
+                        >Trading Group</a
+                    >
+                    <a
+                        href="#promotions"
+                        class="text-brand-muted font-semibold hover:text-brand-text transition-colors"
+                        >Promotions</a
+                    >
+                    <a
+                        href="#newsletter"
+                        class="text-brand-muted font-semibold hover:text-brand-text transition-colors"
+                        >Newsletter</a
+                    >
+                </nav>
+
+                <a
+                    class="btn-primary flex items-center gap-2 px-5 py-3 rounded-full font-bold text-white bg-gradient-to-br from-brand-purple to-brand-blue shadow-lg shadow-brand-purple/30 hover:-translate-y-px transition-transform whitespace-nowrap"
+                    href="https://whop.com/joined/2bit-crypto/"
+                    target="_blank"
+                    rel="noreferrer"
+                    >Join Trading Group</a
+                >
+            </header>
+
+            <main class="grid gap-6">
+                <!-- HERO -->
+                <section
+                    class="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6"
+                >
+                    <!-- intro card -->
+                    <article
+                        class="intro-card rounded-2xl border border-white/10 shadow-xl p-6"
+                    >
+                        <div
+                            class="eyebrow inline-flex items-center gap-2 mb-3 text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest"
+                        >
+                            <span class="status-dot"></span> 2BitCrypto official
+                            hub
+                        </div>
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-[180px_1fr] gap-6 items-center"
+                        >
+                            <img
+                                class="w-full max-w-[180px] aspect-square object-cover rounded-[28px] border-2 border-white/20 shadow-xl"
+                                src="https://pbs.twimg.com/profile_images/2040505802029498368/z58Q8Xtp_400x400.png"
+                                alt="2BitCrypto profile image"
+                            />
+                            <div>
+                                <h1
+                                    class="text-[clamp(2rem,3.2vw,3.35rem)] leading-tight font-black mb-3"
+                                >
+                                    Crypto markets, sharp takes, real-time
+                                    signals and high-impact project exposure.
+                                </h1>
+                                <p class="text-brand-muted leading-relaxed">
+                                    Welcome to the home of 2BitCrypto. Track
+                                    live crypto prices, scan fresh headlines,
+                                    watch the latest content, join the trading
+                                    group and book promotional coverage for your
+                                    project.
+                                </p>
+                                <div class="flex flex-wrap gap-3 mt-4">
+                                    <a
+                                        class="flex items-center gap-2 px-5 py-3 rounded-full font-bold text-white bg-gradient-to-br from-brand-purple to-brand-blue shadow-lg shadow-brand-purple/30 hover:-translate-y-px transition-transform"
+                                        href="https://www.youtube.com/2bitcrypto"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        >Watch on YouTube</a
+                                    >
+                                    <a
+                                        class="flex items-center gap-2 px-5 py-3 rounded-full font-bold bg-white/5 border border-white/10 hover:-translate-y-px transition-transform"
+                                        href="#promotions"
+                                        >Book Promotion</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3 mt-5">
+                            <div
+                                class="bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <strong
+                                    class="block text-xl font-extrabold mb-1"
+                                    >24/7</strong
+                                >
+                                <span class="text-brand-muted text-sm"
+                                    >market focus</span
+                                >
+                            </div>
+                            <div
+                                class="bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <strong
+                                    class="block text-xl font-extrabold mb-1"
+                                    >Live</strong
+                                >
+                                <span class="text-brand-muted text-sm"
+                                    >price tracking</span
+                                >
+                            </div>
+                            <div
+                                class="bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <strong
+                                    class="block text-xl font-extrabold mb-1"
+                                    >Fast</strong
+                                >
+                                <span class="text-brand-muted text-sm"
+                                    >project exposure</span
+                                >
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- news card -->
+                    <aside
+                        class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6"
+                    >
+                        <div
+                            class="flex items-start justify-between gap-4 mb-2"
+                        >
+                            <div>
+                                <p
+                                    class="eyebrow inline-flex items-center gap-2 text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                                >
+                                    Top headlines
+                                </p>
+                                <h2
+                                    class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                                >
+                                    CryptoRank market-moving news
+                                </h2>
+                            </div>
+                            <button
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-white/6 border border-white/10 flex items-center justify-center hover:-translate-y-px transition-transform"
+                                id="refreshNewsBtn"
+                                type="button"
+                                aria-label="Refresh news"
+                            >
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                        <p class="text-brand-muted mb-4">
+                            Get a birds eye view of the market in 10 seconds
+                        </p>
+                        <div class="news-list grid gap-3" id="newsList">
+                            <div
+                                class="p-4 border border-dashed border-white/10 rounded-xl text-center text-brand-muted"
+                            >
+                                Loading top headlines…
+                            </div>
+                        </div>
+                    </aside>
+                </section>
+
+                <!-- SOCIAL STRIP -->
+                <section
+                    class="flex flex-wrap gap-3 bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] border border-white/10 rounded-2xl shadow-xl p-4"
+                >
+                    <a
+                        class="inline-flex items-center gap-3 px-5 py-4 bg-white/4 border border-white/10 rounded-xl font-bold hover:-translate-y-px transition-transform"
+                        href="https://www.youtube.com/2bitcrypto"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <i class="fa-brands fa-youtube text-brand-cyan"></i
+                        ><span>YouTube</span>
+                    </a>
+                    <a
+                        class="inline-flex items-center gap-3 px-5 py-4 bg-white/4 border border-white/10 rounded-xl font-bold hover:-translate-y-px transition-transform"
+                        href="https://x.com/2bitcrypto_YT"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <i class="fa-brands fa-x-twitter text-brand-cyan"></i
+                        ><span>X</span>
+                    </a>
+                    <a
+                        class="inline-flex items-center gap-3 px-5 py-4 bg-white/4 border border-white/10 rounded-xl font-bold hover:-translate-y-px transition-transform"
+                        href="https://whop.com/joined/2bit-crypto/"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <i class="fa-solid fa-user-group text-brand-cyan"></i
+                        ><span>Trading Group</span>
+                    </a>
+                </section>
+
+                <!-- MARKETS -->
+                <section
+                    class="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6"
+                    id="markets"
+                >
+                    <div
+                        class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6"
+                    >
+                        <div
+                            class="flex items-start justify-between gap-4 mb-2"
+                        >
+                            <div>
+                                <p
+                                    class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                                >
+                                    Live crypto board
+                                </p>
+                                <h2
+                                    class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                                >
+                                    Top 24 coins rotating live
+                                </h2>
+                            </div>
+                            <div
+                                class="inline-flex items-center gap-2 text-brand-muted"
+                            >
+                                <button
+                                    class="w-10 h-10 rounded-full bg-white/6 border border-white/10 flex items-center justify-center hover:-translate-y-px transition-transform"
+                                    id="prevPage"
+                                    type="button"
+                                    aria-label="Previous market page"
+                                >
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <span id="pageIndicator" class="text-nowrap"
+                                    >1 / 3</span
+                                >
+                                <button
+                                    class="w-10 h-10 rounded-full bg-white/6 border border-white/10 flex items-center justify-center hover:-translate-y-px transition-transform"
+                                    id="nextPage"
+                                    type="button"
+                                    aria-label="Next market page"
+                                >
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-brand-muted mb-4">
+                            Live prices, 24h change and sparkline trend. Eight
+                            assets are shown at a time.
+                        </p>
+                        <div
+                            class="market-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
+                            id="coinGrid"
+                        >
+                            <div
+                                class="col-span-full p-4 border border-dashed border-white/10 rounded-xl text-center text-brand-muted"
+                            >
+                                Loading live coin data…
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside
+                        class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6 flex flex-col gap-4"
+                    >
+                        <div>
+                            <p
+                                class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                            >
+                                Market pulse
+                            </p>
+                            <h2
+                                class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                            >
+                                Board summary
+                            </h2>
+                        </div>
+                        <div class="stats-stack grid gap-3" id="marketStats">
+                            <div
+                                class="stat-box bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <span class="block text-brand-muted mb-1"
+                                    >Top movers loaded</span
+                                >
+                                <strong class="block text-xl font-extrabold"
+                                    >—</strong
+                                >
+                            </div>
+                            <div
+                                class="stat-box bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <span class="block text-brand-muted mb-1"
+                                    >Avg 24h move</span
+                                >
+                                <strong class="block text-xl font-extrabold"
+                                    >—</strong
+                                >
+                            </div>
+                            <div
+                                class="stat-box bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <span class="block text-brand-muted mb-1"
+                                    >Refresh cycle</span
+                                >
+                                <strong class="block text-xl font-extrabold"
+                                    >60s</strong
+                                >
+                            </div>
+                        </div>
+                        <div
+                            class="rounded-xl overflow-hidden border border-white/10 flex-1"
+                        >
+                            <img
+                                class="w-full h-full object-cover min-h-[200px]"
+                                src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&w=1200&q=80"
+                                alt="Crypto trading screens"
+                            />
+                        </div>
+                    </aside>
+                </section>
+
+                <!-- YOUTUBE -->
+                <section
+                    class="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6"
+                    id="youtube"
+                >
+                    <div
+                        class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6"
+                    >
+                        <div
+                            class="flex items-start justify-between gap-4 mb-4"
+                        >
+                            <div>
+                                <p
+                                    class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                                >
+                                    YouTube channel
+                                </p>
+                                <h2
+                                    class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                                >
+                                    Latest upload and stream watchlist
+                                </h2>
+                            </div>
+                            <a
+                                class="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-white/5 border border-white/10 hover:-translate-y-px transition-transform text-sm"
+                                href="https://www.youtube.com/channel/UCKZychZHsAMTFilBlFyrAGA/videos"
+                                target="_blank"
+                                rel="noreferrer"
+                                >Open Channel</a
+                            >
+                        </div>
+                        <div
+                            class="youtube-grid grid grid-cols-1 sm:grid-cols-2 gap-3"
+                            id="youtubeFeed"
+                        >
+                            <div
+                                class="col-span-full p-4 border border-dashed border-white/10 rounded-xl text-center text-brand-muted"
+                            >
+                                Loading latest channel activity…
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside
+                        class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6 flex flex-col gap-4"
+                    >
+                        <div>
+                            <p
+                                class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                            >
+                                Why people tune in
+                            </p>
+                            <h2
+                                class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                            >
+                                What you get
+                            </h2>
+                        </div>
+                        <ul
+                            class="grid gap-2 text-brand-muted list-none p-0 m-0"
+                        >
+                            <li>Fast crypto market breakdowns</li>
+                            <li>Livestream mentions and project coverage</li>
+                            <li>Macro links that matter for price action</li>
+                            <li>Actionable crypto community updates</li>
+                        </ul>
+                        <div
+                            class="rounded-xl overflow-hidden border border-white/10 flex-1"
+                        >
+                            <img
+                                class="w-full h-full object-cover min-h-[240px]"
+                                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
+                                alt="Studio and broadcasting setup"
+                            />
+                        </div>
+                    </aside>
+                </section>
+
+                <!-- TRADING GROUP -->
+                <section
+                    class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6"
+                    id="group"
+                >
+                    <div class="flex items-start justify-between gap-4 mb-5">
+                        <div>
+                            <p
+                                class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                            >
+                                Main offer
+                            </p>
+                            <h2
+                                class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                            >
+                                Join the 2BitCrypto trading group
+                            </h2>
+                        </div>
+                        <a
+                            class="flex-shrink-0 flex items-center gap-2 px-5 py-3 rounded-full font-bold text-white bg-gradient-to-br from-brand-purple to-brand-blue shadow-lg shadow-brand-purple/30 hover:-translate-y-px transition-transform"
+                            href="https://whop.com/joined/2bit-crypto/"
+                            target="_blank"
+                            rel="noreferrer"
+                            >Join via Whop</a
+                        >
+                    </div>
+                    <div
+                        class="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 items-start"
+                    >
+                        <div>
+                            <p class="text-brand-muted leading-relaxed mb-4">
+                                Get closer to the market with a group built for
+                                people who want sharper market context,
+                                consistent coverage, focused discussion and
+                                quicker access to the strongest themes moving
+                                crypto.
+                            </p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div
+                                    class="flex items-center gap-3 font-bold bg-white/4 border border-white/10 rounded-xl p-4"
+                                >
+                                    <i
+                                        class="fa-solid fa-chart-line text-brand-cyan"
+                                    ></i
+                                    ><span>Daily market insight</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-3 font-bold bg-white/4 border border-white/10 rounded-xl p-4"
+                                >
+                                    <i
+                                        class="fa-solid fa-bolt text-brand-cyan"
+                                    ></i
+                                    ><span>Fast reaction to major news</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-3 font-bold bg-white/4 border border-white/10 rounded-xl p-4"
+                                >
+                                    <i
+                                        class="fa-solid fa-comments text-brand-cyan"
+                                    ></i
+                                    ><span>Community discussion</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-3 font-bold bg-white/4 border border-white/10 rounded-xl p-4"
+                                >
+                                    <i
+                                        class="fa-solid fa-star text-brand-cyan"
+                                    ></i
+                                    ><span>Premium coverage focus</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid gap-3">
+                            <article
+                                class="bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <p class="font-semibold mb-2">
+                                    "Straight to the point. The group helps me
+                                    cut through the noise and focus on what
+                                    matters."
+                                </p>
+                                <span class="text-brand-muted text-sm"
+                                    >Member feedback</span
+                                >
+                            </article>
+                            <article
+                                class="bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <p class="font-semibold mb-2">
+                                    "Great mix of market context, sentiment and
+                                    timing. It feels like getting the important
+                                    bits first."
+                                </p>
+                                <span class="text-brand-muted text-sm"
+                                    >Community review</span
+                                >
+                            </article>
+                            <article
+                                class="bg-white/4 border border-white/10 rounded-xl p-4"
+                            >
+                                <p class="font-semibold mb-2">
+                                    "The livestream and updates keep me locked
+                                    in without needing to scan everything
+                                    myself."
+                                </p>
+                                <span class="text-brand-muted text-sm"
+                                    >Member comment</span
+                                >
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NEWSLETTER -->
+                <!-- <section
+                    class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center rounded-2xl border border-white/10 shadow-xl p-6 bg-[radial-gradient(circle_at_right,rgba(79,163,255,0.15),transparent_35%),linear-gradient(180deg,rgba(14,27,53,0.95),rgba(8,17,34,0.98))]"
+                    id="newsletter"
+                >
+                    <div>
+                        <p
+                            class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-2"
+                        >
+                            Stay plugged in
+                        </p>
+                        <h2
+                            class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold mb-3"
+                        >
+                            Join the mailing list
+                        </h2>
+                        <p class="text-brand-muted leading-relaxed">
+                            Get updates on market moves, new videos,
+                            livestreams, trading group news and project
+                            opportunities.
+                        </p>
+                    </div>
+                    <form class="grid gap-4" id="newsletterForm">
+                        <label class="grid gap-2 font-semibold">
+                            Name
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Your name"
+                                required
+                                class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                            />
+                        </label>
+                        <label class="grid gap-2 font-semibold">
+                            Email
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                required
+                                class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                            />
+                        </label>
+                        <button
+                            type="submit"
+                            class="flex items-center justify-center gap-2 px-5 py-3 rounded-full font-bold text-white bg-gradient-to-br from-brand-purple to-brand-blue shadow-lg shadow-brand-purple/30 hover:-translate-y-px transition-transform"
+                        >
+                            Join Newsletter
+                        </button>
+                    </form>
+                    <p
+                        class="text-brand-muted text-sm"
+                        id="newsletterMessage"
+                    ></p>
+                </section> -->
+
+                <!-- PROMOTIONS -->
+                <section
+                    class="bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] rounded-2xl border border-white/10 shadow-xl p-6"
+                    id="promotions"
+                >
+                    <div class="mb-5">
+                        <p
+                            class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                        >
+                            Promotional services
+                        </p>
+                        <h2
+                            class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                        >
+                            Pick a package and submit your campaign
+                        </h2>
+                    </div>
+                    <div
+                        class="promo-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3"
+                        id="promoGrid"
+                    ></div>
+                </section>
+            </main>
+
+            <!-- FOOTER -->
+            <footer
+                class="mt-6 bg-gradient-to-b from-[rgba(14,27,53,0.92)] to-[rgba(8,17,34,0.96)] border border-white/10 rounded-2xl shadow-xl p-6"
+            >
+                <div
+                    class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr] gap-6"
+                >
+                    <div>
+                        <a
+                            class="brand flex items-center gap-3 mb-4"
+                            href="#top"
+                        >
+                            <img
+                                src="https://pbs.twimg.com/profile_images/2040505802029498368/z58Q8Xtp_400x400.png"
+                                alt="2BitCrypto logo"
+                                class="w-[52px] h-[52px] rounded-full object-cover border-2 border-white/20"
+                            />
+                            <div>
+                                <span class="block font-extrabold"
+                                    >2BitCrypto</span
+                                >
+                                <small class="text-brand-muted"
+                                    >Crypto media, live markets and project
+                                    reach</small
+                                >
+                            </div>
+                        </a>
+                        <p class="text-brand-muted leading-relaxed">
+                            Built to showcase the brand, live market data,
+                            audience touchpoints and your main monetisation
+                            offers in one clean destination.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold mb-3">Site map</h3>
+                        <ul
+                            class="grid gap-2 list-none p-0 m-0 text-brand-muted"
+                        >
+                            <li>
+                                <a
+                                    href="#top"
+                                    class="hover:text-brand-text transition-colors"
+                                    >Home</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#markets"
+                                    class="hover:text-brand-text transition-colors"
+                                    >Markets</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#youtube"
+                                    class="hover:text-brand-text transition-colors"
+                                    >YouTube</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#group"
+                                    class="hover:text-brand-text transition-colors"
+                                    >Trading Group</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#promotions"
+                                    class="hover:text-brand-text transition-colors"
+                                    >Promotions</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#newsletter"
+                                    class="hover:text-brand-text transition-colors"
+                                    >Newsletter</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold mb-3">External links</h3>
+                        <ul
+                            class="grid gap-2 list-none p-0 m-0 text-brand-muted"
+                        >
+                            <li>
+                                <a
+                                    href="https://www.youtube.com/2bitcrypto"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    class="hover:text-brand-text transition-colors"
+                                    >YouTube</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://x.com/2bitcrypto_YT"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    class="hover:text-brand-text transition-colors"
+                                    >X</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://whop.com/joined/2bit-crypto/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    class="hover:text-brand-text transition-colors"
+                                    >Trading Group</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="flex flex-wrap justify-between gap-3 border-t border-white/8 mt-5 pt-4 text-brand-muted text-sm"
+                >
+                    <span
+                        >© <span id="year"></span> 2BitCrypto. All rights
+                        reserved.</span
+                    >
+                    <span
+                        >Built for crypto growth, audience trust and promo
+                        conversions.</span
+                    >
+                </div>
+            </footer>
+        </div>
+
+        <!-- PROMO MODAL -->
+        <div
+            class="modal hidden fixed inset-0 z-50 grid place-items-center p-5"
+            id="promoModal"
+            aria-hidden="true"
+        >
+            <div
+                class="absolute inset-0 bg-[rgba(5,10,20,0.7)] backdrop-blur-xl"
+                data-close-modal="true"
+            ></div>
+            <div
+                class="relative w-full max-w-[720px] max-h-[90vh] overflow-auto p-6 rounded-[28px] border border-white/12 bg-gradient-to-b from-[rgba(14,27,53,0.98)] to-[rgba(8,17,34,1)] shadow-xl"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="promoModalTitle"
+            >
+                <button
+                    class="absolute top-4 right-4 w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:-translate-y-px transition-transform"
+                    type="button"
+                    data-close-modal="true"
+                    aria-label="Close form"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="mb-4">
+                    <p
+                        class="eyebrow text-[#b8c7e7] text-xs font-extrabold uppercase tracking-widest mb-1"
+                    >
+                        Promotion request
+                    </p>
+                    <h2
+                        class="text-[clamp(1.35rem,2vw,2rem)] font-extrabold"
+                        id="promoModalTitle"
+                    >
+                        Submit your campaign
+                    </h2>
+                    <p class="text-brand-muted" id="promoPackageSummary">
+                        Selected package details will appear here.
+                    </p>
+                </div>
+                <div
+                    class="bg-white/4 border border-white/10 rounded-xl p-4 my-5"
+                >
+                    <span class="block font-bold mb-3" id="walletPaymentNote">Pay with USDT ETH</span>
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <code
+                            class="flex-1 min-w-[320px] overflow-wrap-anywhere px-3 py-2.5 rounded-xl bg-white/6 text-[#d1ddff]"
+                            id="walletAddress"
+                            >0x214b3b2c89315A735bfF4838983ee0a0A881232E</code
+                        >
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold bg-white/5 border border-white/10 hover:-translate-y-px transition-transform text-sm"
+                            id="copyWalletBtn"
+                            type="button"
+                        >
+                            Copy
+                        </button>
+                    </div>
+                </div>
+                <form class="grid gap-4" id="promoForm">
+                    <input type="hidden" name="packageName" id="packageName" />
+                    <input
+                        type="hidden"
+                        name="packagePrice"
+                        id="packagePrice"
+                    />
+                    <label class="grid gap-2 font-semibold">
+                        Contact info (Telegram, X or email)
+                        <input
+                            type="text"
+                            name="contact"
+                            placeholder="@username or email"
+                            required
+                            class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                        />
+                    </label>
+                    <label class="grid gap-2 font-semibold">
+                        Transaction ID
+                        <input
+                            type="text"
+                            name="transactionId"
+                            placeholder="Paste payment transaction ID"
+                            required
+                            class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                        />
+                    </label>
+                    <label class="grid gap-2 font-semibold">
+                        Promotion start date
+                        <input
+                            type="date"
+                            name="startDate"
+                            required
+                            class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                        />
+                    </label>
+                    <label class="grid gap-2 font-semibold">
+                        Project website links
+                        <input
+                            type="url"
+                            name="projectLink"
+                            placeholder="https://yourproject.com"
+                            required
+                            class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                        />
+                    </label>
+                    <label class="grid gap-2 font-semibold">
+                        Other useful information
+                        <textarea
+                            name="notes"
+                            rows="5"
+                            placeholder="Campaign details, assets, talking points, deadlines and anything helpful."
+                            class="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-white/5 text-brand-text outline-none focus:border-brand-blue/70 focus:ring-4 focus:ring-brand-blue/10"
+                        ></textarea>
+                    </label>
+                    <div class="flex flex-wrap gap-3 mt-2">
+                        <button
+                            type="submit"
+                            id="promoSubmitBtn"
+                            class="flex items-center gap-2 px-5 py-3 rounded-full font-bold text-white bg-gradient-to-br from-brand-purple to-brand-blue shadow-lg shadow-brand-purple/30 hover:-translate-y-px transition-transform"
+                        >
+                            Submit Campaign Request
+                        </button>
+                        <button
+                            type="button"
+                            data-close-modal="true"
+                            class="flex items-center gap-2 px-5 py-3 rounded-full font-bold bg-white/5 border border-white/10 hover:-translate-y-px transition-transform"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </form>
+                <p class="text-brand-muted text-sm mt-3" id="promoMessage"></p>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>

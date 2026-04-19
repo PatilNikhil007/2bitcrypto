@@ -1,0 +1,68 @@
+{
+  "plans": [
+    {
+      "id": "plan_monthly",
+      "name": "Monthly Coverage",
+      "price": "$2500",
+      "priceUsd": 2500,
+      "description": "More coverage over a month with multiple videos, X posts and live stream mentions.",
+      "bullets": [
+        "Multiple videos",
+        "X posts included",
+        "Livestream mentions over the month"
+      ],
+      "active": true,
+      "createdAt": "2026-04-17T17:43:53.797Z",
+      "updatedAt": "2026-04-17T17:43:53.797Z"
+    },
+    {
+      "id": "plan_livestream",
+      "name": "Live Stream Coverage",
+      "price": "$1250",
+      "priceUsd": 1250,
+      "description": "Get your links on every live stream, a nightly mention and your logo on screen throughout.",
+      "bullets": [
+        "Nightly mention",
+        "On-screen logo placement",
+        "Stream audience visibility"
+      ],
+      "active": true,
+      "createdAt": "2026-04-17T17:43:53.797Z",
+      "updatedAt": "2026-04-17T17:43:53.797Z"
+    },
+    {
+      "id": "plan_full",
+      "name": "Full Package",
+      "price": "$5000",
+      "priceUsd": 5000,
+      "description": "Maximum exposure with multiple videos, livestreams, TikTok shorts and X posts over 30 days.",
+      "bullets": [
+        "Multi-format push",
+        "30-day campaign window",
+        "Maximum brand exposure"
+      ],
+      "active": true,
+      "createdAt": "2026-04-17T17:43:53.797Z",
+      "updatedAt": "2026-04-17T17:47:07.776Z"
+    },
+    {
+      "id": "plan_1776623547430_nfdw",
+      "name": "1000",
+      "price": "10000",
+      "priceUsd": 100000,
+      "description": "10",
+      "bullets": [
+        "1111",
+        "111"
+      ],
+      "active": true,
+      "createdAt": "2026-04-19T18:32:27.430Z",
+      "updatedAt": "2026-04-19T18:32:27.430Z"
+    }
+  ],
+  "config": {
+    "paymentWallet": "0x214b3b2c89315A735bfF4838983ee0a0A881232E",
+    "paymentNote": "Pay with USDT ETH",
+    "updatedAt": "2026-04-17T17:47:02.202Z"
+  }
+}
