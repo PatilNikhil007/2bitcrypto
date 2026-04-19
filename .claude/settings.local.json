@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch *)",
+      "Bash(git ls-tree *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(curl -sI -L https://2bitcrypto.com)",
+      "Bash(curl -s -L https://2bitcrypto.com)",
+      "Bash(gh auth *)"
+    ]
+  }
+}
