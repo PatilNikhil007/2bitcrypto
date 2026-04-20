@@ -44,6 +44,21 @@
       "active": true,
       "createdAt": "2026-04-17T17:43:53.797Z",
       "updatedAt": "2026-04-17T17:47:07.776Z"
+    },
+    {
+      "id": "plan_1776670649070_mtpj",
+      "name": "Video",
+      "price": "675",
+      "priceUsd": 5000,
+      "description": "Get your project out to investors fast with this one hit option.",
+      "bullets": [
+        "Single focused video",
+        "Fast audience exposure",
+        "Simple entry package"
+      ],
+      "active": true,
+      "createdAt": "2026-04-20T07:37:29.069Z",
+      "updatedAt": "2026-04-20T07:37:29.069Z"
     }
   ],
   "config": {
